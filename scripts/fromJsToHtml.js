@@ -58,6 +58,63 @@ function editRowButton(targetDiv, b, rowsInEditMode) {
     rowsInEditMode.push(`row-${i}`);
 }
 
+ function confirmEditing(rowDiv, b, rowsInEditMode) {
+    // take all the texts from the text boxes, save in the object
+    const rowNum = parseInt(rowDiv.className.split('-')[1]);
+    const personKeys = Object.keys(b.personList[rowNum]);
+    for (let i = 1; i < 8; i++) {
+        b.personList[rowNum][personKeys[i]] = rowDiv.children[i].firstElementChild.value;
+    }
+    // change the textboxes to normal text again and the buttons to del & edit
+    rowDiv.innerHTML =
+        `<th class='id row-${rowNum}'>${b.personList[rowNum].id}</th>
+        <th class='firstName row-${rowNum}'>${b.personList[rowNum].firstName}</th>
+        <th class='lastName row-${rowNum}'>${b.personList[rowNum].lastName}</th>
+        <th class='capsule row-${rowNum}'>${b.personList[rowNum].capsule}</th>
+        <th class='age row-${rowNum}'>${b.personList[rowNum].age}</th>
+        <th class='city row-${rowNum}'>${b.personList[rowNum].city}</th>
+        <th class='gender row-${rowNum}'>${b.personList[rowNum].gender}</th>
+        <th class='hobby row-${rowNum}'>${b.personList[rowNum].hobby}</th>
+        <th class='options row-${rowNum}'>
+            <button class=del>
+                delete
+            </button>
+            <button class=edit>
+                edit
+            </button>
+        </th>
+        `
+    // remove the row from the edited rows
+    const j = rowsInEditMode.indexOf(`row-${rowNum}`);
+    rowsInEditMode.splice(j, 1);
+}
+
+function undoEdit(rowDiv, b, rowsInEditMode) {
+    const rowNum = parseInt(rowDiv.className.split('-')[1]);
+    // change the textboxes to normal text again and the buttons to del & edit
+    rowDiv.innerHTML =
+        `<th class='id row-${rowNum}'>${b.personList[rowNum].id}</th>
+        <th class='firstName row-${rowNum}'>${b.personList[rowNum].firstName}</th>
+        <th class='lastName row-${rowNum}'>${b.personList[rowNum].lastName}</th>
+        <th class='capsule row-${rowNum}'>${b.personList[rowNum].capsule}</th>
+        <th class='age row-${rowNum}'>${b.personList[rowNum].age}</th>
+        <th class='city row-${rowNum}'>${b.personList[rowNum].city}</th>
+        <th class='gender row-${rowNum}'>${b.personList[rowNum].gender}</th>
+        <th class='hobby row-${rowNum}'>${b.personList[rowNum].hobby}</th>
+        <th class='options row-${rowNum}'>
+            <button class=del>
+                delete
+            </button>
+            <button class=edit>
+                edit
+            </button>
+        </th>
+        `
+    // remove the row from the edited rows
+    const j = rowsInEditMode.indexOf(`row-${rowNum}`);
+    rowsInEditMode.splice(j, 1);
+}
+
 (async () => {
     let b = new BootcampClass();
     await b.pullClassInfoAndMerge();
@@ -79,20 +136,14 @@ function editRowButton(targetDiv, b, rowsInEditMode) {
                 editRowButton(event.target, b, rowsInEditMode);
                 break;
 
-            case 'editable':
-                console.log('event editable');
-                // editRowButton(event.target, b);
-                break;
-
-
             case 'conf':
                 console.log('event confirm');
-                // editRowButton(event.target, b);
+                confirmEditing(event.target.parentElement.parentElement, b, rowsInEditMode);
                 break;
 
             case 'undo':
                 console.log('event undo');
-                // editRowButton(event.target, b);
+                undoEdit(event.target.parentElement.parentElement, b, rowsInEditMode);
                 break;
         
             default:

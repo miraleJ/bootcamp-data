@@ -12,10 +12,10 @@ async function presentTableOfInfo(b, table) {
                             <th class='gender row-${i}'>${person.gender}</th>
                             <th class='hobby row-${i}'>${person.hobby}</th>
                             <th class='options row-${i}'>
-                                <button class=del>
+                                <button class='del'>
                                     delete
                                 </button>
-                                <button class=edit>
+                                <button class='edit'>
                                     edit
                                 </button>
                             </th>
@@ -61,20 +61,21 @@ function editRowButton(targetDiv, b, rowsInEditMode) {
  function confirmEditing(rowDiv, b, rowsInEditMode) {
     // take all the texts from the text boxes, save in the object
     const rowNum = parseInt(rowDiv.className.split('-')[1]);
-    const personKeys = Object.keys(b.personList[rowNum]);
+    const personI = b.personList.findIndex(p => p.id === rowNum)
+    const personKeys = Object.keys(b.personList[personI]);
     for (let i = 1; i < 8; i++) {
-        b.personList[rowNum][personKeys[i]] = rowDiv.children[i].firstElementChild.value;
+        b.personList[personI][personKeys[i]] = rowDiv.children[i].firstElementChild.value;
     }
     // change the textboxes to normal text again and the buttons to del & edit
     rowDiv.innerHTML =
-        `<th class='id row-${rowNum}'>${b.personList[rowNum].id}</th>
-        <th class='firstName row-${rowNum}'>${b.personList[rowNum].firstName}</th>
-        <th class='lastName row-${rowNum}'>${b.personList[rowNum].lastName}</th>
-        <th class='capsule row-${rowNum}'>${b.personList[rowNum].capsule}</th>
-        <th class='age row-${rowNum}'>${b.personList[rowNum].age}</th>
-        <th class='city row-${rowNum}'>${b.personList[rowNum].city}</th>
-        <th class='gender row-${rowNum}'>${b.personList[rowNum].gender}</th>
-        <th class='hobby row-${rowNum}'>${b.personList[rowNum].hobby}</th>
+        `<th class='id row-${rowNum}'>${b.personList[personI].id}</th>
+        <th class='firstName row-${rowNum}'>${b.personList[personI].firstName}</th>
+        <th class='lastName row-${rowNum}'>${b.personList[personI].lastName}</th>
+        <th class='capsule row-${rowNum}'>${b.personList[personI].capsule}</th>
+        <th class='age row-${rowNum}'>${b.personList[personI].age}</th>
+        <th class='city row-${rowNum}'>${b.personList[personI].city}</th>
+        <th class='gender row-${rowNum}'>${b.personList[personI].gender}</th>
+        <th class='hobby row-${rowNum}'>${b.personList[personI].hobby}</th>
         <th class='options row-${rowNum}'>
             <button class=del>
                 delete
@@ -92,15 +93,16 @@ function editRowButton(targetDiv, b, rowsInEditMode) {
 function undoEdit(rowDiv, b, rowsInEditMode) {
     const rowNum = parseInt(rowDiv.className.split('-')[1]);
     // change the textboxes to normal text again and the buttons to del & edit
+    const personI = b.personList.findIndex(p => p.id === rowNum)
     rowDiv.innerHTML =
-        `<th class='id row-${rowNum}'>${b.personList[rowNum].id}</th>
-        <th class='firstName row-${rowNum}'>${b.personList[rowNum].firstName}</th>
-        <th class='lastName row-${rowNum}'>${b.personList[rowNum].lastName}</th>
-        <th class='capsule row-${rowNum}'>${b.personList[rowNum].capsule}</th>
-        <th class='age row-${rowNum}'>${b.personList[rowNum].age}</th>
-        <th class='city row-${rowNum}'>${b.personList[rowNum].city}</th>
-        <th class='gender row-${rowNum}'>${b.personList[rowNum].gender}</th>
-        <th class='hobby row-${rowNum}'>${b.personList[rowNum].hobby}</th>
+        `<th class='id row-${rowNum}'>${b.personList[personI].id}</th>
+        <th class='firstName row-${rowNum}'>${b.personList[personI].firstName}</th>
+        <th class='lastName row-${rowNum}'>${b.personList[personI].lastName}</th>
+        <th class='capsule row-${rowNum}'>${b.personList[personI].capsule}</th>
+        <th class='age row-${rowNum}'>${b.personList[personI].age}</th>
+        <th class='city row-${rowNum}'>${b.personList[personI].city}</th>
+        <th class='gender row-${rowNum}'>${b.personList[personI].gender}</th>
+        <th class='hobby row-${rowNum}'>${b.personList[personI].hobby}</th>
         <th class='options row-${rowNum}'>
             <button class=del>
                 delete
